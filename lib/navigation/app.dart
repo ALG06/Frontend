@@ -28,6 +28,7 @@ class AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    context.read<AuthService>().initDeepLinks();
     _initializeAuth();
     _setupUniLinks();
   }

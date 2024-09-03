@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../components/main_title.dart';
 import 'donations/form_view.dart';
 import 'locations_view.dart';
 import 'campaigns/campaign_view.dart';
+import '../services/auth_service.dart';
 
+// Your existing StatCard, QuickAction, and RecentActivity classes remain the same
 class StatCard {
   final String title;
   final String value;
@@ -51,6 +54,9 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authService = context.watch<AuthService>();
+    final userName = authService.name?.split(' ')[0] ?? 'Usuario';
+
     final List<StatCard> stats = [
       const StatCard(
         title: 'Donaciones Activas',
@@ -130,20 +136,30 @@ class HomeView extends StatelessWidget {
     ];
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.pink),
+            onPressed: () {
+              context.read<AuthService>().logout();
+            },
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        clipBehavior: Clip.none, // Added to prevent ListView overflow
+        clipBehavior: Clip.none,
         children: [
-          const GeneralTitle(title: 'Hola Andrés,\n¿Qué deseas donar?'),
+          GeneralTitle(title: 'Hola $userName,\n¿Qué deseas donar?'),
           const SizedBox(height: 24),
-          // Stats Cards
           SizedBox(
             height: 105,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: stats.length,
-              clipBehavior:
-                  Clip.none, // Added to prevent horizontal ListView overflow
+              clipBehavior: Clip.none,
               separatorBuilder: (context, index) => const SizedBox(width: 12),
               itemBuilder: (context, index) {
                 final stat = stats[index];
@@ -187,12 +203,10 @@ class HomeView extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
-          // Quick Actions
           ...quickActions.map((action) => Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 8), // Changed from margin to padding
+                padding: const EdgeInsets.only(bottom: 8),
                 child: Card(
-                  margin: EdgeInsets.zero, // Removed card margin
+                  margin: EdgeInsets.zero,
                   child: ListTile(
                     leading: Icon(action.icon, color: Colors.pink[300]),
                     title: Text(action.title),
@@ -211,12 +225,10 @@ class HomeView extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
-          // Recent Activities
           ...recentActivities.map((activity) => Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 8), // Changed from margin to padding
+                padding: const EdgeInsets.only(bottom: 8),
                 child: Card(
-                  margin: EdgeInsets.zero, // Removed card margin
+                  margin: EdgeInsets.zero,
                   child: ListTile(
                     title: Text(activity.title),
                     subtitle: Column(
