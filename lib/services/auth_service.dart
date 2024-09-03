@@ -15,10 +15,16 @@ class AuthService extends ChangeNotifier {
   String? get email => _email;
   String? get name => _name;
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   static const String baseUrl = 'http://your-flask-backend.com';
 
   Future<void> initiateGoogleSignIn() async {
     try {
+      _isLoading = true;
+      notifyListeners();
+
       final response = await http.get(Uri.parse('$baseUrl/auth/login/google'));
       final data = json.decode(response.body);
 
@@ -27,6 +33,9 @@ class AuthService extends ChangeNotifier {
       }
     } catch (e) {
       throw Exception('Failed to initiate Google Sign In: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
