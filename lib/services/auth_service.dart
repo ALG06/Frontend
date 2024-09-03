@@ -21,6 +21,7 @@ class AuthService extends ChangeNotifier {
 
   // Constants
   static const String baseUrl = 'http://127.0.0.1:5000';
+  static const String redirectUri = 'bamxapp://login';
 
   // Initialize deep linking
   Future<void> initDeepLinks() async {
