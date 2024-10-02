@@ -1,16 +1,22 @@
-# myapp
+# Punto Donativo
+## Repositorio Frontend
 
-A new Flutter project.
+Este es el repositorio de frontend para el proyecto de *Punto Donativo*.
 
-## Getting Started
+### Instalación
 
-This project is a starting point for a Flutter application.
+TBD
 
-A few resources to get you started if this is your first Flutter project:
+### Ejecución
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Utiliza el siguiente comando para *instalar* los paquetes de Flutter 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter pub get
+```
+
+Para ejecutar el proyecto, se debe de utilizar el siguiente comando: 
+
+```bash
+flutter run
+```
