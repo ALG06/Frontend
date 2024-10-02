@@ -10,6 +10,9 @@
 .svn/
 migrate_working_dir/
 
+# Cybersecurity-Related
+*.env
+
 # IntelliJ related
 *.iml
 *.ipr
