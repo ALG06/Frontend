@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_view.dart';
@@ -36,7 +37,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0; // Track the current tab
 
-  // Views for each tab
   final List<Widget> _views = [
     const HomeView(),
     const DonateView(),
@@ -48,20 +48,23 @@ class _HomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if (kDebugMode) {
+        print(_selectedIndex);
+      } 
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _views[_selectedIndex], // Show the selected view
+      body: _views[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        type: BottomNavigationBarType.fixed, // Fixed
-        onTap: _onItemTapped, // Handle the tab change
-        backgroundColor: Colors.black, // Black background for the navbar
-        selectedItemColor: Colors.white, // White icons for selected item
-        unselectedItemColor: Colors.white, // White icons for unselected items
+        type: BottomNavigationBarType.fixed,
+        onTap: _onItemTapped,
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Donar'),
