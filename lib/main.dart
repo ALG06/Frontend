@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'home_view.dart';
+import 'donate_view.dart';
+import 'locations_view.dart';
+import 'settings_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,114 +17,51 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Punto Donativo',
       theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0; // Track the current tab
+
+  // Views for each tab
+  final List<Widget> _views = [
+    const HomeView(),
+    const DonateView(),
+    const LocationsView(),
+    const SettingsView(),
+  ];
+
+  // Update selected tab
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Align items to the start
-          children: [
-            Text(
-              'Punto Donativo',
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                color: Colors.grey, // Gray color for the text
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Hola Andrés, ¿Qué deseas donar?',
-                style: GoogleFonts.poppins(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                // First Box
-                Expanded(
-                  child: Container(
-                    height: 150,
-                    color: Colors.teal,
-                    child: const Center(
-                      child: Text(
-                        'Chart 1',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 20),
-                // Second Box
-                Expanded(
-                  child: Container(
-                    height: 150,
-                    color: Colors.blueAccent,
-                    child: const Center(
-                      child: Text(
-                        'Chart 2',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            // Third Box
-            Expanded(
-              child: Container(
-                color: Colors.redAccent,
-                child: const Center(
-                  child: Text(
-                    'Chart 3',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: _views[_selectedIndex], // Show the selected view
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: _selectedIndex,
+        type: BottomNavigationBarType.fixed, // Fixed
+        onTap: _onItemTapped, // Handle the tab change
         backgroundColor: Colors.black, // Black background for the navbar
-        selectedItemColor: Colors.black, // White icons for selected item
-        unselectedItemColor: Colors.black, // White icons for unselected items too
+        selectedItemColor: Colors.white, // White icons for selected item
+        unselectedItemColor: Colors.white, // White icons for unselected items
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Donar'),
