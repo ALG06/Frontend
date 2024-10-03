@@ -11,44 +11,6 @@ void main() {
   runApp(const MyApp());
 }
 
-class GeneralTitle extends StatefulWidget {
-  final String title; // Parameter to hold the text
-
-  const GeneralTitle({super.key, required this.title}); // Constructor
-
-  @override
-  State<GeneralTitle> createState() => _GeneralTitleState(); // Create state
-}
-
-class _GeneralTitleState extends State<GeneralTitle> {
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      widget.title, // Use the title passed to the widget
-      style: const TextStyle(
-        fontSize: 30,
-        fontWeight: FontWeight.w900,
-      ),
-    );
-  }
-}
-
-class PuntoDonativoHeader extends StatelessWidget {
-  const PuntoDonativoHeader({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      'Punto Donativo',
-      style: TextStyle(
-        fontSize: 20,
-        color: Colors.grey,
-        fontWeight: FontWeight.bold,
-      ),
-    );
-  }
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

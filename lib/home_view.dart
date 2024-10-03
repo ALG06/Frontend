@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import "./main.dart";
+import "./utils/utils.dart";
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -12,8 +12,6 @@ class HomeView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PuntoDonativoHeader(), // Use the new widget here
-          SizedBox(height: 10),
           GeneralTitle(title: 'Hola Andrés, ¿Qué deseas donar?'),
           SizedBox(height: 20),
           // Additional content for the home view...
