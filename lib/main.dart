@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
       if (kDebugMode) {
         print(_selectedIndex);
-      } 
+      }
     });
   }
 
@@ -68,8 +68,10 @@ class _HomePageState extends State<HomePage> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Donar'),
-          BottomNavigationBarItem(icon: Icon(Icons.location_on), label: 'Locaciones'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Configuración'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.location_on), label: 'Locaciones'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Configuración'),
         ],
       ),
     );
