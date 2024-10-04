@@ -12,6 +12,8 @@ migrate_working_dir/
 
 # Cybersecurity-Related
 *.env
+.env
+android/local.properties
 
 # IntelliJ related
 *.iml
