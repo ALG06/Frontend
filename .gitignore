@@ -10,10 +10,11 @@
 .svn/
 migrate_working_dir/
 
-# Cybersecurity-Related
+# Security Related Purposes
 *.env
 .env
 android/local.properties
+dotenv
 
 # IntelliJ related
 *.iml
