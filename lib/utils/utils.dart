@@ -24,6 +24,7 @@ class _GeneralTitleState extends State<GeneralTitle> {
               color: Colors.grey,
               fontWeight: FontWeight.bold,
             ),
+            textAlign: TextAlign.left,
           ),
           Text(
             widget.title,
@@ -31,6 +32,7 @@ class _GeneralTitleState extends State<GeneralTitle> {
               fontSize: 30,
               fontWeight: FontWeight.w700, // Very bold
             ),
+            textAlign: TextAlign.left,
           ),
         ],
       ),

@@ -10,7 +10,7 @@ import 'locations_view.dart';
 import 'settings_view.dart';
 
 void main() async {
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: 'env');
 
   if (kIsWeb) {
     // Check if the script is already loaded
