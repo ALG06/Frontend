@@ -120,12 +120,19 @@ class DonateView extends StatelessWidget {
                         ),
                         backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
                         padding: const EdgeInsets.only(left: 50, right: 50)),
-                    child: const Text("Crear donativo", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),))),
+                    child: const Text(
+                      "Crear donativo",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    ))),
             Expanded(
               flex: 2,
               child: DonationList(
                 title: const Text("Donaciones activas",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 donations: pendingDonations,
               ),
             ),
@@ -133,7 +140,8 @@ class DonateView extends StatelessWidget {
               flex: 3,
               child: DonationList(
                 title: const Text("Donaciones pasadas",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 donations: passedDonations,
               ),
             )

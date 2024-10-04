@@ -10,6 +10,13 @@
 .svn/
 migrate_working_dir/
 
+# Security Related Purposes
+*.env
+.env
+android/local.properties
+dotenv
+env
+
 # IntelliJ related
 *.iml
 *.ipr

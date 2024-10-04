@@ -1,12 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'home_view.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:universal_html/html.dart' as html;
+
 import 'donate_view.dart';
+import 'home_view.dart';
 import 'locations_view.dart';
 import 'settings_view.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: 'env');
+
+  if (kIsWeb) {
+    // Check if the script is already loaded
+    if (html.document.querySelector('script[src*="maps.googleapis.com"]') ==
+        null) {
+      final script = html.ScriptElement()
+        ..src =
+            'https://maps.googleapis.com/maps/api/js?key=${dotenv.env['MAPS_API_KEY']}&loading=async';
+      html.document.head!.append(script);
+    }
+  }
+
   runApp(const MyApp());
 }
 
