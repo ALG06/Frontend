@@ -26,6 +26,14 @@ class _LocationsViewState extends State<LocationsView> {
         snippet: 'Donaciones de ropa y alimentos',
       ),
     ),
+    const Marker(
+      markerId: MarkerId('2'),
+      position: LatLng(20.6750990, -103.3536850),
+      infoWindow: InfoWindow(
+        title: 'Punto Donativo',
+        snippet: 'Donaciones de ropa y alimentos',
+      ),
+    ),
   };
 
   @override
