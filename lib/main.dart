@@ -5,12 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/services.dart';
 
-import 'layout/navbar.dart';
-
-import 'donate_view.dart';
-import 'home_view.dart';
-import 'locations_view.dart';
-import 'settings_view.dart';
+import 'navigation/app.dart';
 
 const platform = MethodChannel('com.example.app/environment');
 
@@ -60,46 +55,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const App(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0; // Track the current tab
-
-  final List<Widget> _views = [
-    const HomeView(),
-    const DonateView(),
-    const LocationsView(),
-    const SettingsView(),
-  ];
-
-  // Update selected tab
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (kDebugMode) {
-        print(_selectedIndex);
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _views[_selectedIndex],
-      bottomNavigationBar: NavBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
-      ),
-    );
-  }
-}

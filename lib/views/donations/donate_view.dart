@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "./utils/utils.dart";
+import 'package:myapp/views/donations/form_view.dart';
 
 class Donation {
   final String name;
@@ -88,62 +88,88 @@ class DonationList extends StatelessWidget {
   }
 }
 
-class DonateView extends StatelessWidget {
+class DonateView extends StatefulWidget {
   const DonateView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    List<Donation> pendingDonations = getDonationsFromResponse('pending');
-    List<Donation> passedDonations = getDonationsFromResponse('passed');
+  State<DonateView> createState() => _DonateViewState();
+}
 
+class _DonateViewState extends State<DonateView> {
+  List<Donation> pendingDonations = [];
+  List<Donation> passedDonations = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchDonations();
+  }
+
+  Future<void> _fetchDonations() async {
+    setState(() {
+      pendingDonations = getDonationsFromResponse('pending');
+      passedDonations = getDonationsFromResponse('passed');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          toolbarHeight: 80,
-          title: const Padding(
-            padding: EdgeInsets.only(left: 30.0), // Example padding
-            child: GeneralTitle(title: "Donaciones"),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 80,
+        title: const Padding(
+          padding: EdgeInsets.only(left: 30.0), // Example padding
+          child: Text(
+            'Donaciones',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
           ),
-          titleSpacing: 0, // Remove default title spacing
         ),
-        body: Column(
-          children: [
-            Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
-                        padding: const EdgeInsets.only(left: 50, right: 50)),
-                    child: const Text(
-                      "Crear donativo",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ))),
-            Expanded(
-              flex: 2,
-              child: DonationList(
-                title: const Text("Donaciones activas",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                donations: pendingDonations,
-              ),
+        titleSpacing: 0, // Remove default title spacing
+      ),
+      body: Column(
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FormDonationView()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
+                      padding: const EdgeInsets.only(left: 50, right: 50)),
+                  child: const Text(
+                    "Crear donativo",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  ))),
+          Expanded(
+            flex: 2,
+            child: DonationList(
+              title: const Text("Donaciones activas",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              donations: pendingDonations,
             ),
-            Expanded(
-              flex: 3,
-              child: DonationList(
-                title: const Text("Donaciones pasadas",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                donations: passedDonations,
-              ),
-            )
-          ],
-        ));
+          ),
+          Expanded(
+            flex: 3,
+            child: DonationList(
+              title: const Text("Donaciones pasadas",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              donations: passedDonations,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
