@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import "./utils/utils.dart";
 
 class Donation {
   final String name;
@@ -101,10 +102,7 @@ class DonateView extends StatelessWidget {
           toolbarHeight: 80,
           title: const Padding(
             padding: EdgeInsets.only(left: 30.0), // Example padding
-            child: Text(
-              'Donaciones',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
-            ),
+            child: GeneralTitle(title: "Donaciones"),
           ),
           titleSpacing: 0, // Remove default title spacing
         ),

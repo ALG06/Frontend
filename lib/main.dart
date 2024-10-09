@@ -5,25 +5,43 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/services.dart';
 
+import 'layout/navbar.dart';
+
 import 'donate_view.dart';
 import 'home_view.dart';
 import 'locations_view.dart';
 import 'settings_view.dart';
 
-const platform = MethodChannel('com.yourapp/maps');
+const platform = MethodChannel('com.example.app/environment');
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: 'env');
   final apiKey = dotenv.env['MAPS_API_KEY'];
 
   if (kIsWeb) {
-    // Check if the script is already loaded
     if (html.document.querySelector('script[src*="maps.googleapis.com"]') ==
         null) {
-      final script = html.ScriptElement()
-        ..src =
-            'https://maps.googleapis.com/maps/api/js?key=$apiKey&loading=async';
+      final script = html.ScriptElement()..src = dotenv.env['MAPS_API_URL']!;
       html.document.head!.append(script);
+    }
+  } else if (!kIsWeb) {
+    platform.setMethodCallHandler((call) async {
+      if (call.method == 'getApiKey') {
+        return apiKey;
+      }
+      throw PlatformException(code: 'UNIMPLEMENTED');
+    });
+
+    try {
+      final result = await platform.invokeMethod('initGoogleMaps', apiKey);
+      if (kDebugMode) {
+        print('Google Maps initialization result: $result');
+      }
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print('Failed to initialize Google Maps: ${e.message}');
+      }
     }
   }
 
@@ -78,21 +96,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _views[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        type: BottomNavigationBarType.fixed,
-        onTap: _onItemTapped,
-        backgroundColor: Colors.black,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Donar'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.location_on), label: 'Locaciones'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Configuración'),
-        ],
+      bottomNavigationBar: NavBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
       ),
     );
   }

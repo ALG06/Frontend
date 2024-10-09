@@ -42,7 +42,7 @@ class _LocationsViewState extends State<LocationsView> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          const GeneralTitle(title: 'Locations'),
+          const GeneralTitle(title: 'Locaciones'),
           const SizedBox(height: 10),
           Expanded(
             child: Stack(
