@@ -1,32 +1,56 @@
 import 'package:flutter/material.dart';
+import '../navigation/tab_item.dart';
 
 class NavBar extends StatelessWidget {
-  final int selectedIndex;
-  final Function(int) onItemTapped;
+  final TabItem currentTab;
+  final ValueChanged<TabItem> onSelectTab;
 
   const NavBar({
     super.key,
-    required this.selectedIndex,
-    required this.onItemTapped,
+    required this.currentTab,
+    required this.onSelectTab,
   });
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: selectedIndex,
+      currentIndex: currentTab.index,
       type: BottomNavigationBarType.fixed,
-      onTap: onItemTapped,
+      onTap: (index) => onSelectTab(TabItem.values[index]),
       backgroundColor: Colors.black,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Donar'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.location_on), label: 'Locaciones'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.settings), label: 'Configuración'),
+      items: [
+        _buildItem(TabItem.home),
+        _buildItem(TabItem.donate),
+        _buildItem(TabItem.locations),
+        _buildItem(TabItem.settings),
       ],
     );
   }
+
+BottomNavigationBarItem _buildItem(TabItem tabItem) {
+  IconData icon;
+  
+  switch (tabItem) {
+    case TabItem.home:
+      icon = Icons.home;
+      break;
+    case TabItem.donate:
+      icon = Icons.money;
+      break;
+    case TabItem.locations:
+      icon = Icons.location_on;
+      break;
+    case TabItem.settings:
+      icon = Icons.settings;
+      break;
+  }
+
+  return BottomNavigationBarItem(
+    icon: Icon(icon),
+    label: tabItem.name,
+  );
+}
+
 }
