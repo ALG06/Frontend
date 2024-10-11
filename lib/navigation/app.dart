@@ -20,7 +20,8 @@ class AppState extends State<App> {
   };
 
   void _selectTab(TabItem tabItem) {
-    if (tabItem == _currentTab) { // if the current tab is tapped again, this will pop all the router in the tab stack until the first route is reached. 
+    if (tabItem == _currentTab) {
+      // if the current tab is tapped again, this will pop all the router in the tab stack until the first route is reached.
       _navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst);
     } else {
       setState(() => _currentTab = tabItem);
@@ -30,6 +31,7 @@ class AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
+      // ignore: deprecated_member_use
       onPopInvoked: (bool didPop) {
         if (!didPop) {
           setState(() => _currentTab = TabItem.home);
@@ -50,7 +52,8 @@ class AppState extends State<App> {
     );
   }
 
-  Widget _buildOffstageNavigator(TabItem tabItem) { // This build all the views, but just shows the current tab.
+  Widget _buildOffstageNavigator(TabItem tabItem) {
+    // This build all the views, but just shows the current tab.
     return Offstage(
       offstage: _currentTab != tabItem,
       child: TabNavigator(

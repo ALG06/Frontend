@@ -20,7 +20,7 @@ void main() async {
       final script = html.ScriptElement()
         ..src =
             'https://maps.googleapis.com/maps/api/js?key=${dotenv.env['MAPS_API_KEY']}&loading=async';
-      ;
+
       html.document.head!.append(script);
     }
   } else if (!kIsWeb) {
