@@ -49,4 +49,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# iOS Config file
+# Dev Files 
+LOCATIONS.md

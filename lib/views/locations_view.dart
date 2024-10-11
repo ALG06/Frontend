@@ -22,7 +22,7 @@ class _LocationsViewState extends State<LocationsView> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       if (mounted) {
         setState(() => _mapLoaded = true);
       }
@@ -32,18 +32,36 @@ class _LocationsViewState extends State<LocationsView> {
   final Set<Marker> _markers = {
     const Marker(
       markerId: MarkerId('1'),
-      position: LatLng(20.6750688, -103.3536598),
+      position: LatLng(20.5942101, -103.3995043),
       infoWindow: InfoWindow(
-        title: 'Punto Donativo',
-        snippet: 'Donaciones de ropa y alimentos',
+        title: 'BAMX Tlaquepaque',
+        snippet:
+            'Hda. de La Calerilla 360, Santa María Tequepexpan, 45601 San Pedro Tlaquepaque, Jal.',
       ),
     ),
     const Marker(
       markerId: MarkerId('2'),
-      position: LatLng(20.6750990, -103.3536850),
+      position: LatLng(20.5320654, -103.1548235),
       infoWindow: InfoWindow(
-        title: 'Punto Donativo',
-        snippet: 'Donaciones de ropa y alimentos',
+        title: 'BAMX Juanacatan',
+        snippet: 'Cam. al Viejo Seminario 83, 45880 San Antonio, Jal.',
+      ),
+    ),
+    const Marker(
+      markerId: MarkerId('3'),
+      position: LatLng(20.6346218, -103.0694927),
+      infoWindow: InfoWindow(
+        title: 'BAMX Zapotlanejo',
+        snippet:
+            'Cam. Antiguo al Bajio 160, Fraccionamiento Universidad, 45430 Zapotlanejo, Jal.',
+      ),
+    ),
+    const Marker(
+      markerId: MarkerId('4'),
+      position: LatLng(20.6560847, -103.355554),
+      infoWindow: InfoWindow(
+        title: 'BAMX Guadalajara',
+        snippet: 'Pichón, Morelos, 44910 Guadalajara, Jal.',
       ),
     ),
   };

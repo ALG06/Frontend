@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import "../utils//utils.dart";
 
 class LayoutGeneral extends StatelessWidget {
   final Widget child;
@@ -9,9 +10,7 @@ class LayoutGeneral extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
+      appBar: AppBar(title: GeneralTitle(title: title)),
       body: child,
     );
   }
