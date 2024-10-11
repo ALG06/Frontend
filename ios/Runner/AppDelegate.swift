@@ -14,7 +14,6 @@ import GoogleMaps
         
         channel.setMethodCallHandler({ [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
             if call.method == "getApiKey" {
-                // This will be implemented in Dart
                 result(nil)
             } else if call.method == "initGoogleMaps" {
                 if let apiKey = call.arguments as? String {

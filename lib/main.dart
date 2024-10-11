@@ -5,12 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/services.dart';
 
-import 'layout/navbar.dart';
-
-import 'donate_view.dart';
-import 'home_view.dart';
-import 'locations_view.dart';
-import 'settings_view.dart';
+import 'navigation/app.dart';
 
 const platform = MethodChannel('com.example.app/environment');
 
@@ -22,7 +17,10 @@ void main() async {
   if (kIsWeb) {
     if (html.document.querySelector('script[src*="maps.googleapis.com"]') ==
         null) {
-      final script = html.ScriptElement()..src = dotenv.env['MAPS_API_URL']!;
+      final script = html.ScriptElement()
+        ..src =
+            'https://maps.googleapis.com/maps/api/js?key=${dotenv.env['MAPS_API_KEY']}&loading=async';
+      ;
       html.document.head!.append(script);
     }
   } else if (!kIsWeb) {
@@ -60,46 +58,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0; // Track the current tab
-
-  final List<Widget> _views = [
-    const HomeView(),
-    const DonateView(),
-    const LocationsView(),
-    const SettingsView(),
-  ];
-
-  // Update selected tab
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (kDebugMode) {
-        print(_selectedIndex);
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _views[_selectedIndex],
-      bottomNavigationBar: NavBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
-      ),
+      home: const App(),
     );
   }
 }
