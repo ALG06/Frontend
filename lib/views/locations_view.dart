@@ -11,7 +11,7 @@ class LocationsView extends StatefulWidget {
 class _LocationsViewState extends State<LocationsView> {
   late GoogleMapController? mapController;
 
-  bool _mapLoaded = false; // Add this line
+  bool _mapLoaded = false;
   final LatLng _center = const LatLng(20.6750688, -103.3536598);
 
   void _onMapCreated(GoogleMapController controller) {
@@ -69,11 +69,14 @@ class _LocationsViewState extends State<LocationsView> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(top: 0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const GeneralTitle(title: 'Locaciones'),
-          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: GeneralTitle(title: 'Locaciones'),
+          ),
           Expanded(
             child: _mapLoaded
                 ? GoogleMap(
@@ -81,7 +84,7 @@ class _LocationsViewState extends State<LocationsView> {
                     markers: _markers,
                     initialCameraPosition: CameraPosition(
                       target: _center,
-                      zoom: 12.0,
+                      zoom: 10.0,
                     ))
                 : const Center(child: CircularProgressIndicator()),
           ),

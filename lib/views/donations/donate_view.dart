@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/views/donations/form_view.dart';
+import "../../utils/utils.dart";
 
 class Donation {
   final String name;
@@ -14,7 +15,6 @@ class Donation {
       required this.pending});
 }
 
-// Simulating the server response data
 Map<String, dynamic> serverResponse = {
   "pending": [
     {"id": 1, "name": "Arroz", "amount": 4.0, "pending": true},
@@ -50,17 +50,15 @@ List<Donation> getDonationsFromResponse(String status) {
 }
 
 Widget buildDonationItem(Donation donation) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-    child: Card(
-      color: Colors.white,
-      elevation: 2,
-      child: ListTile(
-        title: Text(donation.name),
-        subtitle: Text('${donation.amount.toStringAsFixed(2)} kg'),
-        trailing: Text(
-            '${donation.date.day}/${donation.date.month}/${donation.date.year}'),
-      ),
+  return Card(
+    color: Colors.white,
+    elevation: 1,
+    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+    child: ListTile(
+      title: Text(donation.name),
+      subtitle: Text('${donation.amount.toStringAsFixed(2)} kg'),
+      trailing: Text(
+          '${donation.date.day}/${donation.date.month}/${donation.date.year}'),
     ),
   );
 }
@@ -73,8 +71,12 @@ class DonationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title,
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
+          child: title,
+        ),
         Expanded(
           child: ListView.builder(
             itemCount: donations.length,
@@ -114,58 +116,61 @@ class _DonateViewState extends State<DonateView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        toolbarHeight: 80,
-        title: const Padding(
-          padding: EdgeInsets.only(left: 30.0), // Example padding
-          child: Text(
-            'Donaciones',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
-          ),
-        ),
-        titleSpacing: 0, // Remove default title spacing
-      ),
-      body: Column(
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const FormDonationView()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
-                      padding: const EdgeInsets.only(left: 50, right: 50)),
-                  child: const Text(
-                    "Crear donativo",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  ))),
-          Expanded(
-            flex: 2,
-            child: DonationList(
-              title: const Text("Donaciones activas",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              donations: pendingDonations,
+          const GeneralTitle(title: "Donaciones"),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const FormDonationView()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+            ),
+            child: const Text(
+              "Crear donativo",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
             ),
           ),
+          const SizedBox(height: 20),
+          const Text("Donaciones activas",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          const SizedBox(height: 8),
+          Expanded(
+            flex: 2,
+            child: ListView.builder(
+              itemCount: pendingDonations.length,
+              itemBuilder: (context, index) {
+                return buildDonationItem(pendingDonations[index]);
+              },
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Text("Donaciones pasadas",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          const SizedBox(height: 8),
           Expanded(
             flex: 3,
-            child: DonationList(
-              title: const Text("Donaciones pasadas",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              donations: passedDonations,
+            child: ListView.builder(
+              itemCount: passedDonations.length,
+              itemBuilder: (context, index) {
+                return buildDonationItem(passedDonations[index]);
+              },
             ),
           ),
         ],

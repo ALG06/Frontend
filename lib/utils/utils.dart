@@ -13,7 +13,7 @@ class _GeneralTitleState extends State<GeneralTitle> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0), // Added padding value
+      padding: const EdgeInsets.only(top: 35.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -30,10 +30,11 @@ class _GeneralTitleState extends State<GeneralTitle> {
             widget.title,
             style: GoogleFonts.poppins(
               fontSize: 30,
-              fontWeight: FontWeight.w700, // Very bold
+              fontWeight: FontWeight.w700,
             ),
             textAlign: TextAlign.left,
           ),
+          const SizedBox(height: 10)
         ],
       ),
     );

@@ -13,8 +13,6 @@ class HomeView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GeneralTitle(title: 'Hola Andrés, ¿Qué deseas donar?'),
-          SizedBox(height: 20),
-          // Additional content for the home view...
         ],
       ),
     );
