@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "../utils/utils.dart";
+import "../components/main_title.dart";
 import "./auth/auth_forms.dart";
 
 // TODO: Implement it with the rest of the app.

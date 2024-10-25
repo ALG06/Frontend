@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/views/donations/form_view.dart';
-import "../../utils/utils.dart";
+import "../../components/main_title.dart";
 
 class Donation {
   final String name;
@@ -123,7 +123,8 @@ class _DonateViewState extends State<DonateView> {
         children: [
           const GeneralTitle(title: "Donaciones"),
           const SizedBox(height: 16),
-          ElevatedButton(
+          Center(
+            child: ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
@@ -146,6 +147,7 @@ class _DonateViewState extends State<DonateView> {
                 fontSize: 15,
               ),
             ),
+          ),
           ),
           const SizedBox(height: 20),
           const Text("Donaciones activas",
