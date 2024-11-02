@@ -1,39 +1,39 @@
 import Flutter
 import UIKit
 import GoogleMaps
+
 @main
 @objc class AppDelegate: FlutterAppDelegate {
-  override func application(
-    _ application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-  ) -> Bool {
+    override func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        // Read API key from Info.plist
+        if let apiKey = Bundle.main.object(forInfoDictionaryKey: "MAPS_API_KEY") as? String {
+            GMSServices.provideAPIKey(apiKey)
+            print("Google Maps initialized with API key from environment")
+        } else {
+            print("Warning: MAPS_API_KEY not found in environment")
+        }
+        
         let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
         let channel = FlutterMethodChannel(name: "com.example.app/environment",
-                                           binaryMessenger: controller.binaryMessenger)
-                var googleMapsInitialized = false
+                                         binaryMessenger: controller.binaryMessenger)
         
         channel.setMethodCallHandler({ [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
-            if call.method == "getApiKey" {
-                result(nil)
-            } else if call.method == "initGoogleMaps" {
-                if let apiKey = call.arguments as? String {
-                    if !googleMapsInitialized {
-                        GMSServices.provideAPIKey(apiKey)
-                        googleMapsInitialized = true
-                        print("Google Maps initialized with API key")
-                    }
-                    result(true)
-                } else {
-                    print("Error: Failed to get MAPS_API_KEY from Flutter")
-                    result(FlutterError(code: "INVALID_API_KEY", message: "API key is null or invalid", details: nil))
-                }
-            } else {
+            switch call.method {
+            case "getApiKey":
+                let apiKey = Bundle.main.object(forInfoDictionaryKey: "MAPS_API_KEY") as? String
+                result(apiKey)
+            case "initGoogleMaps":
+                // API key is already initialized in application launch
+                result(true)
+            default:
                 result(FlutterMethodNotImplemented)
             }
         })
-
-
-    GeneratedPluginRegistrant.register(with: self)
-    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-  }
+        
+        GeneratedPluginRegistrant.register(with: self)
+        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
 }
