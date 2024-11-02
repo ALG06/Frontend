@@ -55,6 +55,13 @@ android/keystore.properties
 android/app/release/
 android/key.properties
 
+# Secrets and Keys 
+android/app/src/main/res/values/secrets.xml
+ios/Runner/Config.xcconfig
+local.properties.template
+.env.template
+ios/Config.xcconfig
 # Dev Files 
 LOCATIONS.md
 
+ios/Config.xcconfig

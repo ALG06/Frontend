@@ -1,7 +1,6 @@
 plugins {
-        id "com.android.application"
+    id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -12,7 +11,6 @@ if (localPropertiesFile.exists()) {
         localProperties.load(reader)
     }
 }
-
 
 android {
     namespace = "com.example.frontend"
@@ -40,7 +38,6 @@ android {
             MAPS_API_KEY: localProperties.getProperty('MAPS_API_KEY') ?: "",
             applicationName: "io.flutter.app.FlutterApplication"
         ]
-
     }
 
     buildTypes {

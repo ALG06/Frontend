@@ -29,28 +29,30 @@ class NavBar extends StatelessWidget {
     );
   }
 
-BottomNavigationBarItem _buildItem(TabItem tabItem) {
-  IconData icon;
-  
-  switch (tabItem) {
-    case TabItem.home:
-      icon = Icons.home;
-      break;
-    case TabItem.donate:
-      icon = Icons.money;
-      break;
-    case TabItem.locations:
-      icon = Icons.location_on;
-      break;
-    case TabItem.settings:
-      icon = Icons.settings;
-      break;
+  BottomNavigationBarItem _buildItem(TabItem tabItem) {
+    IconData icon;
+
+    switch (tabItem) {
+      case TabItem.home:
+        icon = Icons.home;
+        break;
+      case TabItem.donate:
+        icon = Icons.money;
+        break;
+      case TabItem.campaign:
+        icon = Icons.campaign;
+        break;
+      case TabItem.locations:
+        icon = Icons.location_on;
+        break;
+      case TabItem.settings:
+        icon = Icons.settings;
+        break;
+    }
+
+    return BottomNavigationBarItem(
+      icon: Icon(icon),
+      label: tabItem.name,
+    );
   }
-
-  return BottomNavigationBarItem(
-    icon: Icon(icon),
-    label: tabItem.name,
-  );
-}
-
 }
