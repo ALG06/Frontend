@@ -49,5 +49,12 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Android keys 
+android/local.properties
+android/keystore.properties
+android/app/release/
+android/key.properties
+
 # Dev Files 
 LOCATIONS.md
+
