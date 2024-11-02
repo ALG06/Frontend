@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:universal_html/html.dart' as html;
-import 'package:flutter/services.dart';
 
 import 'navigation/app.dart';
-
-const platform = MethodChannel('com.example.app/environment');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
