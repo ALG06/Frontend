@@ -57,5 +57,8 @@
 		<key>NSLocationAlwaysUsageDescription</key>
 		<string>Esta aplicación necesita acceso a la ubicación para mostrar las campañas más
 			cercanas a ti.</string>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>This app needs to save your preferences.</string>
+			
 	</dict>
 </plist>

@@ -20,27 +20,61 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   void initState() {
     super.initState();
-    _loadSettings();
+    _initializeSettings();
+  }
+
+  Future<void> _initializeSettings() async {
+    try {
+      await _loadSettings();
+    } catch (e) {
+      debugPrint('Error loading settings: $e');
+      // Use default values if loading fails
+      setState(() {
+        _isDarkMode = false;
+        _notificationsEnabled = true;
+        _locationEnabled = true;
+        _selectedDistance = 'km';
+        _maxDistance = 10.0;
+      });
+    }
   }
 
   Future<void> _loadSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isDarkMode = prefs.getBool('darkMode') ?? false;
-      _notificationsEnabled = prefs.getBool('notifications') ?? true;
-      _locationEnabled = prefs.getBool('location') ?? true;
-      _selectedDistance = prefs.getString('distanceUnit') ?? 'km';
-      _maxDistance = prefs.getDouble('maxDistance') ?? 10.0;
-    });
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        _isDarkMode = prefs.getBool('darkMode') ?? false;
+        _notificationsEnabled = prefs.getBool('notifications') ?? true;
+        _locationEnabled = prefs.getBool('location') ?? true;
+        _selectedDistance = prefs.getString('distanceUnit') ?? 'km';
+        _maxDistance = prefs.getDouble('maxDistance') ?? 10.0;
+      });
+    } catch (e) {
+      debugPrint('Error in _loadSettings: $e');
+      rethrow;
+    }
   }
 
   Future<void> _saveSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('darkMode', _isDarkMode);
-    await prefs.setBool('notifications', _notificationsEnabled);
-    await prefs.setBool('location', _locationEnabled);
-    await prefs.setString('distanceUnit', _selectedDistance);
-    await prefs.setDouble('maxDistance', _maxDistance);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('darkMode', _isDarkMode);
+      await prefs.setBool('notifications', _notificationsEnabled);
+      await prefs.setBool('location', _locationEnabled);
+      await prefs.setString('distanceUnit', _selectedDistance);
+      await prefs.setDouble('maxDistance', _maxDistance);
+    } catch (e) {
+      debugPrint('Error saving settings: $e');
+      // Optionally show an error message to the user
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error al guardar la configuración'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -60,7 +94,7 @@ class _SettingsViewState extends State<SettingsView> {
                   subtitle: const Text('Cambiar apariencia de la aplicación'),
                   trailing: Switch(
                     value: _isDarkMode,
-                    activeColor: Colors.pink[300],
+                    activeColor: const Color.fromRGBO(8, 66, 130, 1),
                     onChanged: (bool value) {
                       setState(() {
                         _isDarkMode = value;
@@ -75,7 +109,7 @@ class _SettingsViewState extends State<SettingsView> {
                   subtitle: const Text('Recibir avisos de nuevas campañas'),
                   trailing: Switch(
                     value: _notificationsEnabled,
-                    activeColor: Colors.pink[300],
+                    activeColor: const Color.fromRGBO(8, 66, 130, 1),
                     onChanged: (bool value) {
                       setState(() {
                         _notificationsEnabled = value;
@@ -97,7 +131,7 @@ class _SettingsViewState extends State<SettingsView> {
                   subtitle: const Text('Permitir acceso a la ubicación'),
                   trailing: Switch(
                     value: _locationEnabled,
-                    activeColor: Colors.pink[300],
+                    activeColor: const Color.fromRGBO(8, 66, 130, 1),
                     onChanged: (bool value) {
                       setState(() {
                         _locationEnabled = value;
@@ -149,7 +183,7 @@ class _SettingsViewState extends State<SettingsView> {
                         min: 1.0,
                         max: 50.0,
                         divisions: 49,
-                        activeColor: Colors.pink[300],
+                        activeColor: const Color.fromRGBO(8, 66, 130, 1),
                         label: '${_maxDistance.round()} km',
                         onChanged: (double value) {
                           setState(() {
@@ -169,10 +203,10 @@ class _SettingsViewState extends State<SettingsView> {
             margin: EdgeInsets.zero,
             child: Column(
               children: [
-                ListTile(
-                  leading: const Icon(Icons.info_outline),
-                  title: const Text('Versión de la Aplicación'),
-                  subtitle: const Text('1.0.0'),
+                const ListTile(
+                  leading: Icon(Icons.info_outline),
+                  title: Text('Versión de la Aplicación'),
+                  subtitle: Text('1.0.0'),
                 ),
                 const Divider(),
                 ListTile(
@@ -220,6 +254,7 @@ class _SettingsViewState extends State<SettingsView> {
                             final prefs = await SharedPreferences.getInstance();
                             await prefs.clear();
                             if (mounted) {
+                              // ignore: use_build_context_synchronously
                               Navigator.of(context).pop();
                             }
                             _loadSettings();
