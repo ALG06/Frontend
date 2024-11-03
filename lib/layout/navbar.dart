@@ -46,7 +46,7 @@ class NavBar extends StatelessWidget {
         icon = Icons.home;
         break;
       case TabItem.donate:
-        icon = Icons.money;
+        icon = Icons.auto_awesome;
         break;
       case TabItem.campaign:
         icon = Icons.campaign;
