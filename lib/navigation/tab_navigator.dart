@@ -24,10 +24,10 @@ class TabNavigator extends StatelessWidget {
             return const HomeView();
           case TabItem.donate:
             return const DonateView();
-          case TabItem.locations:
-            return const LocationsView();
           case TabItem.campaign:
             return const CampaignView();
+          case TabItem.locations:
+            return const LocationsView();
           case TabItem.settings:
             return const SettingsView();
         }
