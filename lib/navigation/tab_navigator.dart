@@ -3,7 +3,7 @@ import '../views/home_view.dart';
 import '../views/donations/donate_view.dart';
 import '../views/locations_view.dart';
 import '../views/settings_view.dart';
-import '../views/campaign_view.dart';
+import '../views/campaigns/campaign_view.dart';
 import 'tab_item.dart';
 
 class TabNavigator extends StatelessWidget {
@@ -24,10 +24,10 @@ class TabNavigator extends StatelessWidget {
             return const HomeView();
           case TabItem.donate:
             return const DonateView();
-          case TabItem.locations:
-            return const LocationsView();
           case TabItem.campaign:
             return const CampaignView();
+          case TabItem.locations:
+            return const LocationsView();
           case TabItem.settings:
             return const SettingsView();
         }

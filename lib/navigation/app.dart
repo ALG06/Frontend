@@ -15,9 +15,9 @@ class AppState extends State<App> {
   final _navigatorKeys = {
     TabItem.home: GlobalKey<NavigatorState>(),
     TabItem.donate: GlobalKey<NavigatorState>(),
+    TabItem.campaign: GlobalKey<NavigatorState>(),
     TabItem.locations: GlobalKey<NavigatorState>(),
     TabItem.settings: GlobalKey<NavigatorState>(),
-    TabItem.campaign: GlobalKey<NavigatorState>(),
   };
 
   void _selectTab(TabItem tabItem) {
@@ -42,9 +42,9 @@ class AppState extends State<App> {
         body: Stack(children: <Widget>[
           _buildOffstageNavigator(TabItem.home),
           _buildOffstageNavigator(TabItem.donate),
+          _buildOffstageNavigator(TabItem.campaign),
           _buildOffstageNavigator(TabItem.locations),
           _buildOffstageNavigator(TabItem.settings),
-          _buildOffstageNavigator(TabItem.campaign),
         ]),
         bottomNavigationBar: NavBar(
           currentTab: _currentTab,

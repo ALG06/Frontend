@@ -2,6 +2,7 @@
 ## Repositorio Frontend
 
 Este es el repositorio de frontend para el proyecto de *Punto Donativo*.
+Debido al uso de tecnologías de Google Maps, este proyecto solo está disponible en las plataformas de iOS y Android, siendo `web` relegado a un segundo plano. 
 
 ### Instalación
 
@@ -23,6 +24,10 @@ En el caso de testear en iOS, asegurate de tener abierto el simulador de iPhone.
 open -a simulator
 ```
 
+#### Android 
+En el caso de Android, solo es necesario abrir Android Studio una sola vez y abrir el emulador respectivo.  
+
+--- 
 Una vez el emulador (iOS / Android) abierto, es solo cuestión de utilizar el siguiente comando:
 
 
