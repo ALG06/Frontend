@@ -3,7 +3,7 @@ import '../views/home_view.dart';
 import '../views/donations/donate_view.dart';
 import '../views/locations_view.dart';
 import '../views/settings_view.dart';
-import '../views/campaign_view.dart';
+import '../views/campaigns/campaign_view.dart';
 import 'tab_item.dart';
 
 class TabNavigator extends StatelessWidget {

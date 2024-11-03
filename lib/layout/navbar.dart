@@ -20,8 +20,6 @@ class NavBar extends StatelessWidget {
       backgroundColor: Colors.black,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
       selectedIconTheme:
           const IconThemeData(size: 30), // Bigger size for selected icons
       unselectedIconTheme:
