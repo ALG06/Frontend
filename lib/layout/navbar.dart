@@ -24,6 +24,10 @@ class NavBar extends StatelessWidget {
           const IconThemeData(size: 30), // Bigger size for selected icons
       unselectedIconTheme:
           const IconThemeData(size: 24), // Default size for unselected icons
+      selectedLabelStyle:
+          const TextStyle(fontSize: 12), // Smaller text for selected labels
+      unselectedLabelStyle:
+          const TextStyle(fontSize: 10), // Smaller text for unselected labels
       items: [
         _buildItem(TabItem.home),
         _buildItem(TabItem.donate),
