@@ -41,6 +41,7 @@ dependencies:
   universal_html: ^2.2.4
   qr_flutter: ^4.1.0
   shared_preferences: ^2.3.2
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
