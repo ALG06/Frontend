@@ -1,0 +1,33 @@
+def PLUGIN = "uni_links"
+
+group 'name.avioli.unilinks'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 33
+    }
+
+    namespace 'name.avioli.unilinks'
+}
+
+repositories {
+    google()
+    mavenCentral()
+}

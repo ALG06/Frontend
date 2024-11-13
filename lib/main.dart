@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Punto Donativo',
       theme: ThemeData(
+        primaryColor: const Color.fromRGBO(8, 66, 130, 1),
         textTheme: GoogleFonts.poppinsTextTheme(),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromRGBO(8, 66, 130, 1),

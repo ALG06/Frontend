@@ -20,9 +20,18 @@ class NavBar extends StatelessWidget {
       backgroundColor: Colors.black,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white,
+      selectedIconTheme:
+          const IconThemeData(size: 30), // Bigger size for selected icons
+      unselectedIconTheme:
+          const IconThemeData(size: 24), // Default size for unselected icons
+      selectedLabelStyle:
+          const TextStyle(fontSize: 12), // Smaller text for selected labels
+      unselectedLabelStyle:
+          const TextStyle(fontSize: 10), // Smaller text for unselected labels
       items: [
         _buildItem(TabItem.home),
         _buildItem(TabItem.donate),
+        _buildItem(TabItem.campaign),
         _buildItem(TabItem.locations),
         _buildItem(TabItem.settings),
       ],
@@ -37,7 +46,7 @@ class NavBar extends StatelessWidget {
         icon = Icons.home;
         break;
       case TabItem.donate:
-        icon = Icons.money;
+        icon = Icons.auto_awesome;
         break;
       case TabItem.campaign:
         icon = Icons.campaign;

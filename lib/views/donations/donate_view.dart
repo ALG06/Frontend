@@ -8,11 +8,12 @@ class Donation {
   final DateTime date;
   final bool pending;
 
-  Donation(
-      {required this.name,
-      required this.amount,
-      required this.date,
-      required this.pending});
+  Donation({
+    required this.name,
+    required this.amount,
+    required this.date,
+    required this.pending,
+  });
 }
 
 Map<String, dynamic> serverResponse = {
@@ -34,7 +35,6 @@ Map<String, dynamic> serverResponse = {
   ]
 };
 
-// Function to simulate fetching data and mapping it to a List<Donation>
 List<Donation> getDonationsFromResponse(String status) {
   List<Donation> donations = [];
   var data = serverResponse[status];
@@ -49,47 +49,6 @@ List<Donation> getDonationsFromResponse(String status) {
   return donations;
 }
 
-Widget buildDonationItem(Donation donation) {
-  return Card(
-    color: Colors.white,
-    elevation: 1,
-    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-    child: ListTile(
-      title: Text(donation.name),
-      subtitle: Text('${donation.amount.toStringAsFixed(2)} kg'),
-      trailing: Text(
-          '${donation.date.day}/${donation.date.month}/${donation.date.year}'),
-    ),
-  );
-}
-
-class DonationList extends StatelessWidget {
-  final List<Donation> donations;
-  final Widget title;
-
-  const DonationList({super.key, required this.donations, required this.title});
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
-          child: title,
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: donations.length,
-            itemBuilder: (context, index) {
-              return buildDonationItem(donations[index]);
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class DonateView extends StatefulWidget {
   const DonateView({super.key});
 
@@ -100,6 +59,7 @@ class DonateView extends StatefulWidget {
 class _DonateViewState extends State<DonateView> {
   List<Donation> pendingDonations = [];
   List<Donation> passedDonations = [];
+  bool _showingPending = true;
 
   @override
   void initState() {
@@ -114,68 +74,111 @@ class _DonateViewState extends State<DonateView> {
     });
   }
 
+  Color _getDonationColor(bool isPending) {
+    return isPending ? Colors.blue : Colors.grey;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
+    return Scaffold(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const GeneralTitle(title: "Donaciones"),
-          const SizedBox(height: 16),
-          Center(
-            child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const FormDonationView()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-            ),
-            child: const Text(
-              "Crear donativo",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const GeneralTitle(title: "Donaciones"),
+                const SizedBox(height: 8),
+                TextButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _showingPending = !_showingPending;
+                    });
+                  },
+                  icon: Icon(
+                    _showingPending ? Icons.pending_actions : Icons.history,
+                    color: Colors.pink[300],
+                  ),
+                  label: Text(
+                    _showingPending
+                        ? 'Donaciones Activas'
+                        : 'Donaciones Pasadas',
+                    style: TextStyle(color: Colors.pink[300]),
+                  ),
+                ),
+              ],
             ),
           ),
-          ),
-          const SizedBox(height: 20),
-          const Text("Donaciones activas",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          const SizedBox(height: 8),
           Expanded(
-            flex: 2,
-            child: ListView.builder(
-              itemCount: pendingDonations.length,
+            child: ListView.separated(
+              itemCount: _showingPending
+                  ? pendingDonations.length
+                  : passedDonations.length,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              separatorBuilder: (context, index) => const Divider(),
               itemBuilder: (context, index) {
-                return buildDonationItem(pendingDonations[index]);
-              },
-            ),
-          ),
-          const SizedBox(height: 16),
-          const Text("Donaciones pasadas",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          const SizedBox(height: 8),
-          Expanded(
-            flex: 3,
-            child: ListView.builder(
-              itemCount: passedDonations.length,
-              itemBuilder: (context, index) {
-                return buildDonationItem(passedDonations[index]);
+                final donation = _showingPending
+                    ? pendingDonations[index]
+                    : passedDonations[index];
+                return ListTile(
+                  title: Text(
+                    donation.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 4),
+                      Text(
+                        '⚖️ ${donation.amount.toStringAsFixed(2)} kg • 📅 ${donation.date.day.toString().padLeft(2, '0')}-${donation.date.month.toString().padLeft(2, '0')}-${donation.date.year}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  trailing: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color:
+                          _getDonationColor(donation.pending).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      donation.pending ? 'Activa' : 'Completada',
+                      style: TextStyle(
+                        color: _getDonationColor(donation.pending),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const FormDonationView()),
+          );
+        },
+        backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
+        label: const Text(
+          'Crear Donativo',
+          style: TextStyle(color: Colors.white),
+        ),
+        icon: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

@@ -1,4 +1,4 @@
-enum TabItem { home, donate, locations, settings, campaign }
+enum TabItem { home, donate, campaign, locations, settings }
 
 extension TabItemExtension on TabItem {
   String get name {
@@ -7,10 +7,10 @@ extension TabItemExtension on TabItem {
         return 'Home';
       case TabItem.donate:
         return 'Donar';
-      case TabItem.locations:
-        return 'Locaciones';
       case TabItem.campaign:
         return 'Campañas';
+      case TabItem.locations:
+        return 'Locaciones';
       case TabItem.settings:
         return 'Configuración';
     }
