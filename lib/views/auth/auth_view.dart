@@ -19,36 +19,6 @@ class AuthView extends StatelessWidget {
             ),
             const SizedBox(height: 48),
 
-            // Stats-style card for auth benefits
-            SizedBox(
-              height: 105,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _buildFeatureCard(
-                    'Dona Alimentos',
-                    'Ayuda a familias necesitadas',
-                    Icons.volunteer_activism,
-                    Colors.blue,
-                  ),
-                  const SizedBox(width: 12),
-                  _buildFeatureCard(
-                    'Encuentra Centros',
-                    'Localiza puntos de donación',
-                    Icons.location_on,
-                    Colors.green,
-                  ),
-                  const SizedBox(width: 12),
-                  _buildFeatureCard(
-                    'Únete a Campañas',
-                    'Participa en acciones colectivas',
-                    Icons.campaign,
-                    Colors.orange,
-                  ),
-                ],
-              ),
-            ),
-
             const SizedBox(height: 48),
 
             // Sign in button styled like your quick action cards

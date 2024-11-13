@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:universal_html/html.dart' as html;
-
+import 'package:provider/provider.dart';
+import 'services/auth_service.dart';
 import 'navigation/app.dart';
 
 void main() async {
@@ -21,7 +22,15 @@ void main() async {
     }
   }
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthService()),
+        // Add more providers as needed
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -35,7 +44,8 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color.fromRGBO(8, 66, 130, 1),
         textTheme: GoogleFonts.poppinsTextTheme(),
         colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromRGBO(8, 66, 130, 1)),
+          seedColor: const Color.fromRGBO(8, 66, 130, 1),
+        ),
         useMaterial3: true,
       ),
       home: const App(),
