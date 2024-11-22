@@ -5,7 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:provider/provider.dart';
 import 'services/auth_service.dart';
-import 'navigation/app.dart';
+import 'views/auth/auth_start_view.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +28,6 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
-        // Add more providers as needed
       ],
       child: const MyApp(),
     ),
@@ -40,15 +41,32 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Punto Donativo',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(8, 66, 130, 1),
         textTheme: GoogleFonts.poppinsTextTheme(),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromRGBO(8, 66, 130, 1),
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color.fromRGBO(8, 66, 130, 1)),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
+            foregroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(48),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
         useMaterial3: true,
       ),
-      home: const App(),
+      home: const AuthStartView(),
     );
   }
 }
