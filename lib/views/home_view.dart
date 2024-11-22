@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/main.dart';
 import 'package:provider/provider.dart';
-import '../components/main_title.dart';
-import 'donations/form_view.dart';
-import 'locations_view.dart';
-import 'campaigns/campaign_view.dart';
 import '../services/auth_service.dart';
+import '../views/auth/auth_start_view.dart';
+import "../../components/main_title.dart";
 
-// Your existing StatCard, QuickAction, and RecentActivity classes remain the same
-class StatCard {
-  final String title;
+// Data Models
+class Stat {
   final String value;
-  final IconData icon;
+  final String title;
   final Color color;
 
-  const StatCard({
-    required this.title,
+  const Stat({
     required this.value,
-    required this.icon,
+    required this.title,
     required this.color,
   });
 }
@@ -25,7 +22,7 @@ class QuickAction {
   final String title;
   final String description;
   final IconData icon;
-  final void Function(BuildContext) onTap;
+  final Function(BuildContext) onTap;
 
   const QuickAction({
     required this.title,
@@ -35,244 +32,235 @@ class QuickAction {
   });
 }
 
-class RecentActivity {
+class Activity {
   final String title;
   final String description;
   final DateTime date;
-  final String status;
+  final IconData icon;
 
-  const RecentActivity({
+  const Activity({
     required this.title,
     required this.description,
     required this.date,
-    required this.status,
+    required this.icon,
   });
 }
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  // Sample Data
+  final stats = const [
+    Stat(
+      value: '150kg',
+      title: 'Alimentos Donados',
+      color: Colors.blue,
+    ),
+    Stat(
+      value: '12',
+      title: 'Campañas Activas',
+      color: Colors.green,
+    ),
+    Stat(
+      value: '3',
+      title: 'Centros Cercanos',
+      color: Colors.orange,
+    ),
+  ];
+
+  final quickActions = [
+    QuickAction(
+      title: 'Donar Alimentos',
+      description: 'Registra tu donación de alimentos',
+      icon: Icons.food_bank,
+      onTap: (context) {
+        // Navigate to donation screen
+      },
+    ),
+    QuickAction(
+      title: 'Encontrar Centros',
+      description: 'Localiza centros de acopio cercanos',
+      icon: Icons.location_on,
+      onTap: (context) {
+        // Navigate to locations screen
+      },
+    ),
+    QuickAction(
+      title: 'Ver Campañas',
+      description: 'Descubre campañas activas',
+      icon: Icons.campaign,
+      onTap: (context) {
+        // Navigate to campaigns screen
+      },
+    ),
+  ];
+
+  final recentActivities = [
+    Activity(
+      title: 'Donación Realizada',
+      description: 'Donaste 5kg de alimentos',
+      date: DateTime.now().subtract(const Duration(days: 1)),
+      icon: Icons.check_circle,
+    ),
+    Activity(
+      title: 'Nueva Campaña',
+      description: 'Te uniste a la campaña "Alimentos para Todos"',
+      date: DateTime.now().subtract(const Duration(days: 2)),
+      icon: Icons.campaign,
+    ),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    final authService = context.watch<AuthService>();
-    final userName = authService.name?.split(' ')[0] ?? 'Usuario';
-
-    final List<StatCard> stats = [
-      const StatCard(
-        title: 'Donaciones Activas',
-        value: '3',
-        icon: Icons.pending_actions,
-        color: Colors.blue,
-      ),
-      const StatCard(
-        title: 'Total Donado',
-        value: '45.5 kg',
-        icon: Icons.scale,
-        color: Colors.green,
-      ),
-      const StatCard(
-        title: 'Familias Ayudadas',
-        value: '12',
-        icon: Icons.people,
-        color: Colors.orange,
-      ),
-    ];
-
-    final List<QuickAction> quickActions = [
-      QuickAction(
-        title: 'Crear Donación',
-        description: 'Registra una nueva donación de alimentos',
-        icon: Icons.add_circle_outline,
-        onTap: (BuildContext context) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const FormDonationView()),
-          );
-        },
-      ),
-      QuickAction(
-        title: 'Encuentra un Centro',
-        description: 'Localiza el centro de donación más cercano',
-        icon: Icons.location_on_outlined,
-        onTap: (BuildContext context) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LocationsView()),
-          );
-        },
-      ),
-      QuickAction(
-        title: 'Ver Campañas',
-        description: 'Descubre campañas activas de donación',
-        icon: Icons.campaign_outlined,
-        onTap: (BuildContext context) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const CampaignView()),
-          );
-        },
-      ),
-    ];
-
-    final List<RecentActivity> recentActivities = [
-      RecentActivity(
-        title: 'Donación de Arroz',
-        description: '4.0 kg - BAMX Tlaquepaque',
-        date: DateTime.now().subtract(const Duration(days: 2)),
-        status: 'Pendiente',
-      ),
-      RecentActivity(
-        title: 'Donación de Frijol',
-        description: '7.0 kg - BAMX Guadalajara',
-        date: DateTime.now().subtract(const Duration(days: 5)),
-        status: 'Completada',
-      ),
-      RecentActivity(
-        title: 'Donación de Atún',
-        description: '2.0 kg - BAMX Zapopan',
-        date: DateTime.now().subtract(const Duration(days: 7)),
-        status: 'Completada',
-      ),
-    ];
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.pink),
-            onPressed: () {
-              context.read<AuthService>().logout();
-            },
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        clipBehavior: Clip.none,
-        children: [
-          GeneralTitle(title: 'Hola $userName,\n¿Qué deseas donar?'),
-          const SizedBox(height: 24),
-          SizedBox(
-            height: 105,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: stats.length,
-              clipBehavior: Clip.none,
-              separatorBuilder: (context, index) => const SizedBox(width: 12),
-              itemBuilder: (context, index) {
-                final stat = stats[index];
-                return Container(
-                  width: 160,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: stat.color.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(stat.icon, color: stat.color),
-                      const Spacer(),
-                      Text(
-                        stat.value,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: stat.color,
-                        ),
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const GeneralTitle(title: "Bienvenidos"),
+            IconButton(
+              icon: const Icon(Icons.logout, color: Colors.pink),
+              onPressed: () async {
+                final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Cerrar Sesión'),
+                    content:
+                        const Text('¿Estás seguro que deseas cerrar sesión?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: const Text('Cancelar'),
                       ),
-                      Text(
-                        stat.title,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.pink,
                         ),
+                        child: const Text('Cerrar Sesión'),
                       ),
                     ],
                   ),
                 );
+
+                if (confirmed == true && mounted) {
+                  try {
+                    await context.read<AuthService>().logout();
+                    if (context.mounted) {
+                      navigatorKey.currentState?.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const AuthStartView(),
+                        ),
+                        (route) => false,
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Error al cerrar sesión')),
+                      );
+                    }
+                  }
+                }
               },
             ),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            'Acciones Rápidas',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 12),
-          ...quickActions.map((action) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  child: ListTile(
-                    leading: Icon(action.icon, color: Colors.pink[300]),
-                    title: Text(action.title),
-                    subtitle: Text(
-                      action.description,
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+          ],
+        ),
+        const SizedBox(height: 24),
+        SizedBox(
+          height: 105,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: stats.length,
+            separatorBuilder: (context, index) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              final stat = stats[index];
+              return Container(
+                width: 128,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: stat.color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      stat.value,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: stat.color,
+                      ),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onTap: () => action.onTap(context),
+                    const Spacer(),
+                    Text(
+                      stat.title,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          'Acciones Rápidas',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 12),
+        ...quickActions.map((action) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Card(
+                margin: EdgeInsets.zero,
+                child: ListTile(
+                  leading: Icon(action.icon, color: Colors.pink[300]),
+                  title: Text(action.title),
+                  subtitle: Text(
+                    action.description,
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () => action.onTap(context),
+                ),
+              ),
+            )),
+        const SizedBox(height: 24),
+        Text(
+          'Actividad Reciente',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 12),
+        ...recentActivities.map((activity) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Card(
+                margin: EdgeInsets.zero,
+                child: ListTile(
+                  leading: Icon(activity.icon, color: Colors.green[300]),
+                  title: Text(activity.title),
+                  subtitle: Text(
+                    activity.description,
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  ),
+                  trailing: Text(
+                    '${activity.date.day}/${activity.date.month}',
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
                 ),
-              )),
-          const SizedBox(height: 24),
-          Text(
-            'Actividad Reciente',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 12),
-          ...recentActivities.map((activity) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  child: ListTile(
-                    title: Text(activity.title),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          activity.description,
-                          style:
-                              TextStyle(fontSize: 12, color: Colors.grey[600]),
-                        ),
-                        Text(
-                          '${activity.date.day}/${activity.date.month}/${activity.date.year}',
-                          style:
-                              TextStyle(fontSize: 12, color: Colors.grey[600]),
-                        ),
-                      ],
-                    ),
-                    trailing: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: activity.status == 'Pendiente'
-                            ? Colors.orange.withOpacity(0.1)
-                            : Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        activity.status,
-                        style: TextStyle(
-                          color: activity.status == 'Pendiente'
-                              ? Colors.orange
-                              : Colors.green,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )),
-        ],
-      ),
+              ),
+            )),
+      ],
     );
   }
 }

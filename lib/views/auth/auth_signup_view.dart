@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';
 import '../../components/main_title.dart';
+import '../../navigation/app.dart';
 
-class AuthView extends StatefulWidget {
-  const AuthView({super.key});
+class AuthSignupView extends StatefulWidget {
+  const AuthSignupView({super.key});
 
   @override
-  State<AuthView> createState() => _AuthViewState();
+  State<AuthSignupView> createState() => _AuthSignupViewState();
 }
 
-class _AuthViewState extends State<AuthView> {
+class _AuthSignupViewState extends State<AuthSignupView> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -25,19 +28,37 @@ class _AuthViewState extends State<AuthView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-            const SizedBox(height: 48),
+            const SizedBox(height: 24),
             const GeneralTitle(
-              title: '¡Bienvenido a BAMX!\nInicia sesión para continuar',
+              title: '¡Únete a BAMX!\nCrea tu cuenta para continuar',
             ),
             const SizedBox(height: 48),
             Form(
               key: _formKey,
               child: Column(
                 children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nombre completo',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingrese su nombre';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
                   TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(
@@ -68,22 +89,26 @@ class _AuthViewState extends State<AuthView> {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: () async {
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
+                      minimumSize: const Size.fromHeight(48),
+                    ),
+                    onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        final success = await context.read<AuthService>().login(
-                              _emailController.text,
-                              _passwordController.text,
-                            );
-                        if (!success && mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Error al iniciar sesión'),
-                            ),
-                          );
-                        }
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const App()),
+                        );
                       }
                     },
-                    child: const Text('Iniciar Sesión'),
+                    child: const Text(
+                      'Registrarse',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
