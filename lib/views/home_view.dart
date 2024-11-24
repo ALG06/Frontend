@@ -3,7 +3,10 @@ import 'package:myapp/main.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 import '../views/auth/auth_start_view.dart';
-import "../../components/main_title.dart";
+import '../views/donations/form_view.dart';
+import '../views/locations_view.dart';
+import '../views/campaigns/campaign_view.dart';
+import '../../components/main_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Stat {
@@ -78,14 +81,22 @@ class _HomeViewState extends State<HomeView> {
       title: 'Donar Alimentos',
       description: 'Registra tu donación de alimentos',
       icon: Icons.food_bank,
-      onTap: (context) {},
+      onTap: (context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const FormDonationView()),
+        );
+      },
     ),
     QuickAction(
       title: 'Encontrar Centros',
       description: 'Localiza centros de acopio cercanos',
       icon: Icons.location_on,
       onTap: (context) {
-        // Navigate to locations screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LocationsView()),
+        );
       },
     ),
     QuickAction(
@@ -93,7 +104,10 @@ class _HomeViewState extends State<HomeView> {
       description: 'Descubre campañas activas',
       icon: Icons.campaign,
       onTap: (context) {
-        // Navigate to campaigns screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const CampaignView()),
+        );
       },
     ),
   ];
