@@ -176,6 +176,7 @@ class _HomeViewState extends State<HomeView> {
 
                 if (confirmed == true && mounted) {
                   try {
+                    // ignore: use_build_context_synchronously
                     await context.read<AuthService>().logout();
                     if (context.mounted) {
                       navigatorKey.currentState?.pushAndRemoveUntil(
