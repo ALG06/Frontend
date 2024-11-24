@@ -31,7 +31,8 @@ class _AuthViewState extends State<AuthView> {
           children: [
             const SizedBox(height: 48),
             const GeneralTitle(
-              title: '¡Bienvenido a BAMX!\nInicia sesión para continuar',
+              title:
+                  '¡Bienvenido a Punto Donativo!\nInicia sesión para continuar',
             ),
             const SizedBox(height: 48),
             Form(

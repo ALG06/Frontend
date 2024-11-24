@@ -15,7 +15,14 @@ class AuthStartView extends StatelessWidget {
           children: [
             const SizedBox(height: 48),
             const GeneralTitle(
-              title: '¡Bienvenido a BAMX!\nElige una opción para continuar',
+              title: '¡Bienvenido a Punto Donativo!',
+            ),
+            const Text(
+              "Elige una opción para continuar",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 48),
             ElevatedButton(
