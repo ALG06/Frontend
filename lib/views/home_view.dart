@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 import '../views/auth/auth_start_view.dart';
 import "../../components/main_title.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
-// Data Models
 class Stat {
   final String value;
   final String title;
@@ -78,9 +78,7 @@ class _HomeViewState extends State<HomeView> {
       title: 'Donar Alimentos',
       description: 'Registra tu donación de alimentos',
       icon: Icons.food_bank,
-      onTap: (context) {
-        // Navigate to donation screen
-      },
+      onTap: (context) {},
     ),
     QuickAction(
       title: 'Encontrar Centros',
@@ -123,7 +121,20 @@ class _HomeViewState extends State<HomeView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const GeneralTitle(title: "Bienvenidos"),
+            FutureBuilder(
+              future: SharedPreferences.getInstance(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const GeneralTitle(title: "Bienvenido");
+                } else if (snapshot.hasError) {
+                  return const GeneralTitle(title: "Bienvenido");
+                } else {
+                  final prefs = snapshot.data as SharedPreferences;
+                  final name = prefs.getString('name') ?? '';
+                  return GeneralTitle(title: "Bienvenido \n$name");
+                }
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.logout, color: Colors.pink),
               onPressed: () async {
