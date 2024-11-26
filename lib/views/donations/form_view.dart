@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import '../../navigation/app.dart';
 import '../../components/main_title.dart';
 import 'choose_location_view.dart';
+import 'qr_code_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddFoodForm extends StatefulWidget {
   const AddFoodForm({super.key});
@@ -149,6 +151,24 @@ class FormDonationViewState extends State<FormDonationView> {
   TimeOfDay? selectedTime;
   bool isLoading = false;
   int currentStep = 0;
+  String? _userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserIdAndFetchData();
+  }
+
+  Future<void> _loadUserIdAndFetchData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      _userId =
+          prefs.getString('user_id') ?? '1'; // Default to '1' if not found
+    } catch (e) {
+      print('Error loading user data: ${e.toString()}');
+    }
+  }
+
 
   Future<void> _showAddFoodBottomSheet() async {
     final newFood = await showModalBottomSheet<Map<String, dynamic>>(
@@ -184,7 +204,7 @@ class FormDonationViewState extends State<FormDonationView> {
   }
 
   Future<void> _submitDonation() async {
-    if (foodList.isEmpty ||
+    /*if (foodList.isEmpty ||
         selectedLocation == null ||
         selectedDate == null ||
         selectedTime == null) {
@@ -195,26 +215,35 @@ class FormDonationViewState extends State<FormDonationView> {
         ),
       );
       return;
-    }
+    }*/
 
     setState(() {
       isLoading = true;
     });
 
     try {
+
       final donation = {
         'id': DateTime.now().millisecondsSinceEpoch, // Temporary ID generation
-        'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
-        'time': '${selectedTime!.hour}:${selectedTime!.minute}:00',
+        //'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
+        //'time': '${selectedTime!.hour}:${selectedTime!.minute}:00',
         'state': 'pending',
-        'id_donor': 1, // Replace with actual donor ID from authentication
-        'id_point': selectedPointId,
+        'id_donor': _userId, // Replace with actual donor ID from authentication
+        //'id_point': selectedPointId,
         'type': foodList.map((food) => food['category']).toSet().join(', '),
         'pending': true,
+        "foods": foodList.map((food) {
+          return {
+            "name": food["name"], // Food name
+            "quantity": food["quantity"], // Quantity (kg)
+            "category": food["category"], // Category
+            "perishable": food["perishable"], // Perishable status
+          };
+        }).toList(),
       };
-
+      final url = Uri.parse('http://127.0.0.1:5000/donations/create');
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:5000/donations/create'),
+        url,
         headers: {'Content-Type': 'application/json'},
         body: json.encode(donation),
       );
@@ -226,7 +255,9 @@ class FormDonationViewState extends State<FormDonationView> {
             backgroundColor: Colors.green,
           ),
         );
-        setState(() {
+        final responseBody = jsonDecode(response.body);
+        final qrCodeBase64 = responseBody['qr_code'];
+         setState(() {
           foodList.clear();
           selectedLocation = null;
           selectedLocationTitle = null;
@@ -234,7 +265,17 @@ class FormDonationViewState extends State<FormDonationView> {
           selectedTime = null;
           currentStep = 0;
         });
-        Navigator.popUntil(context, (route) => route.isFirst);
+
+        if (qrCodeBase64 != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => QRCodeView(qrCodeBase64: qrCodeBase64),
+            ),
+          );
+        } else {
+          print('QR code not found in response.');
+        }
       } else {
         throw Exception('Failed to submit donation');
       }
@@ -392,7 +433,7 @@ class FormDonationViewState extends State<FormDonationView> {
         const SizedBox(height: 20),
         Center(
           child: ElevatedButton(
-            onPressed: _chooseLocation,
+            onPressed: _submitDonation,
             child: const Text(
               "Escoger punto de donación",
               style: TextStyle(
