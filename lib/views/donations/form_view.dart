@@ -3,8 +3,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'choose_location_view.dart';
+import '../../navigation/app.dart';
 import '../../components/main_title.dart';
+import 'choose_location_view.dart';
 
 class AddFoodForm extends StatefulWidget {
   const AddFoodForm({super.key});
@@ -233,7 +234,7 @@ class FormDonationViewState extends State<FormDonationView> {
           selectedTime = null;
           currentStep = 0;
         });
-        Navigator.pop(context); // Return to previous screen
+        Navigator.popUntil(context, (route) => route.isFirst);
       } else {
         throw Exception('Failed to submit donation');
       }
@@ -313,7 +314,7 @@ class FormDonationViewState extends State<FormDonationView> {
           ),
         ),
         const SizedBox(height: 20),
-        if (foodList.isNotEmpty)
+        if (foodList.isNotEmpty) ...[
           Expanded(
             child: ListView.builder(
               itemCount: foodList.length,
@@ -339,7 +340,8 @@ class FormDonationViewState extends State<FormDonationView> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                            '${food['category']} - ${food['perishable'] ? 'Perecedero' : 'No Perecedero'}'),
+                          '${food['category']} - ${food['perishable'] ? 'Perecedero' : 'No Perecedero'}',
+                        ),
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () => _removeFood(index),
@@ -351,18 +353,34 @@ class FormDonationViewState extends State<FormDonationView> {
               },
             ),
           ),
-        if (foodList.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+          const SizedBox(height: 16),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               onPressed: () {
                 setState(() {
                   currentStep = 1;
                 });
               },
-              child: const Text('Continuar'),
+              child: const Text(
+                'Continuar',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
+        ],
       ],
     );
   }
