@@ -193,14 +193,14 @@ class _DonateViewState extends State<DonateView> {
                             children: [
                               const SizedBox(height: 4),
                               Text(
-                                '🏷️ ${donation.type} • 📅 ${donation.date.day.toString().padLeft(2, '0')}-${donation.date.month.toString().padLeft(2, '0')}-${donation.date.year} • ⏰ ${donation.time}',
+                                '🏷️ ${donation.type} • 📅 ${donation.date.day.toString().padLeft(2, '0')}-${donation.date.month.toString().padLeft(2, '0')}-${donation.date.year} • ⏰ ${donation.time.substring(0, 5)}',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[600],
                                 ),
                               ),
                               Text(
-                                'Estado: ${donation.state}',
+                                'Estado: ${donation.state == "pending" ? "Pending" : donation.state}',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[600],
