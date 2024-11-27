@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/views/donations/form_view.dart';
 import "../../components/main_title.dart";
 import 'package:http/http.dart' as http;
+import 'qr_code_view.dart';
 import 'dart:convert';
 
 class Donation {
@@ -108,6 +109,35 @@ class _DonateViewState extends State<DonateView> {
     await _fetchDonations();
   }
 
+  Future<String> _fetchQRCode(int donationId) async {
+    final url = Uri.parse('http://127.0.0.1:5000/donations/qrcode/$donationId'); // Use the correct endpoint for fetching QR code
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final responseBody = jsonDecode(response.body);
+        final qrCodeBase64 = responseBody['qr']; // Adjusted to match backend response structure
+
+        if (qrCodeBase64 != null) {
+          return qrCodeBase64;
+        } else {
+          throw Exception('QR code not found in the response.');
+        }
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['error'] ?? 'Failed to fetch QR code.');
+      }
+    } catch (e) {
+      throw Exception('Error fetching QR code: $e');
+    }
+  }
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,6 +238,25 @@ class _DonateViewState extends State<DonateView> {
                               ),
                             ],
                           ),
+                          onTap: () async {
+                            if (donation.id != null) {
+                              try {
+                                final qrCode = await _fetchQRCode(donation.id!);
+                                if (context.mounted) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => QRCodeView(qrCodeBase64: qrCode, titleText: "QR de la donación",),
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Failed to fetch QR Code: $e')),
+                                );
+                              }
+                            }
+                          },
                           trailing: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
