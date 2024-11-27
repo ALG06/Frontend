@@ -47,7 +47,8 @@ class _ChooseLocationViewState extends State<ChooseLocationView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Escoger punto de donación'),
+        title: const Text('Escoger punto de donación',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromRGBO(8, 66, 130, 1),
       ),
       body: Column(
@@ -71,14 +72,26 @@ class _ChooseLocationViewState extends State<ChooseLocationView> {
           if (selectedLocation != null)
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context, {
-                    'position': selectedLocation,
-                    'title': selectedLocationTitle,
-                  });
-                },
-                child: const Text('Confirmar ubicación'),
+              child: Column(
+                children: [
+                  Text(
+                    selectedLocationTitle ?? '',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8), // Add some spacing
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context, {
+                        'position': selectedLocation,
+                        'title': selectedLocationTitle,
+                      });
+                    },
+                    child: const Text('Confirmar ubicación'),
+                  ),
+                ],
               ),
             ),
         ],

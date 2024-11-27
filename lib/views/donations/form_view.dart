@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +30,7 @@ class AddFoodFormState extends State<AddFoodForm> {
     'Frutas',
     'Lácteos',
     'Granos',
+    "Aceites",
     'Bebidas',
     'Otros',
   ];
@@ -67,7 +69,7 @@ class AddFoodFormState extends State<AddFoodForm> {
               TextFormField(
                 controller: _quantityController,
                 decoration: const InputDecoration(
-                  labelText: 'Cantidad (g)',
+                  labelText: 'Cantidad (g / ml)',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
@@ -169,7 +171,6 @@ class FormDonationViewState extends State<FormDonationView> {
     }
   }
 
-
   Future<void> _showAddFoodBottomSheet() async {
     final newFood = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
@@ -222,7 +223,6 @@ class FormDonationViewState extends State<FormDonationView> {
     });
 
     try {
-
       final donation = {
         'id': DateTime.now().millisecondsSinceEpoch, // Temporary ID generation
         'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
@@ -249,6 +249,7 @@ class FormDonationViewState extends State<FormDonationView> {
       );
 
       if (response.statusCode == 201) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Donación enviada con éxito'),
@@ -257,7 +258,8 @@ class FormDonationViewState extends State<FormDonationView> {
         );
         final responseBody = jsonDecode(response.body);
         final qrCodeBase64 = responseBody['qr_code'];
-         setState(() {
+
+        setState(() {
           foodList.clear();
           selectedLocation = null;
           selectedLocationTitle = null;
@@ -270,11 +272,17 @@ class FormDonationViewState extends State<FormDonationView> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => QRCodeView(qrCodeBase64: qrCodeBase64, titleText: "Tu QR está listo"),
+              builder: (context) => QRCodeView(
+                  qrCodeBase64: qrCodeBase64,
+                  titleText: "Tu QR está listo",
+                  donationID:  "",
             ),
+          )
           );
         } else {
-          print('QR code not found in response.');
+          if (kDebugMode) {
+            print('QR code not found in response.');
+          }
         }
       } else {
         throw Exception('Failed to submit donation');

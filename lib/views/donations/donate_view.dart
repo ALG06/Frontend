@@ -110,7 +110,8 @@ class _DonateViewState extends State<DonateView> {
   }
 
   Future<String> _fetchQRCode(int donationId) async {
-    final url = Uri.parse('http://127.0.0.1:5000/donations/qrcode/$donationId'); // Use the correct endpoint for fetching QR code
+    final url = Uri.parse(
+        'http://127.0.0.1:5000/donations/qrcode/$donationId'); // Use the correct endpoint for fetching QR code
 
     try {
       final response = await http.get(
@@ -120,7 +121,8 @@ class _DonateViewState extends State<DonateView> {
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
-        final qrCodeBase64 = responseBody['qr']; // Adjusted to match backend response structure
+        final qrCodeBase64 =
+            responseBody['qr']; // Adjusted to match backend response structure
 
         if (qrCodeBase64 != null) {
           return qrCodeBase64;
@@ -135,8 +137,6 @@ class _DonateViewState extends State<DonateView> {
       throw Exception('Error fetching QR code: $e');
     }
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -229,13 +229,6 @@ class _DonateViewState extends State<DonateView> {
                                   color: Colors.grey[600],
                                 ),
                               ),
-                              Text(
-                                'Estado: ${donation.state == "pending" ? "Pending" : donation.state}',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
                             ],
                           ),
                           onTap: () async {
@@ -246,13 +239,18 @@ class _DonateViewState extends State<DonateView> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => QRCodeView(qrCodeBase64: qrCode, titleText: "QR de la donación",),
+                                      builder: (context) => QRCodeView(
+                                          qrCodeBase64: qrCode,
+                                          titleText: "QR de la donación",
+                                          donationID: donation.id.toString()),
                                     ),
                                   );
                                 }
                               } catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Failed to fetch QR Code: $e')),
+                                  SnackBar(
+                                      content:
+                                          Text('Failed to fetch QR Code: $e')),
                                 );
                               }
                             }
