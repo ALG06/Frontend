@@ -204,7 +204,7 @@ class FormDonationViewState extends State<FormDonationView> {
   }
 
   Future<void> _submitDonation() async {
-    /*if (foodList.isEmpty ||
+    if (foodList.isEmpty ||
         selectedLocation == null ||
         selectedDate == null ||
         selectedTime == null) {
@@ -215,7 +215,7 @@ class FormDonationViewState extends State<FormDonationView> {
         ),
       );
       return;
-    }*/
+    }
 
     setState(() {
       isLoading = true;
@@ -225,11 +225,11 @@ class FormDonationViewState extends State<FormDonationView> {
 
       final donation = {
         'id': DateTime.now().millisecondsSinceEpoch, // Temporary ID generation
-        //'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
-        //'time': '${selectedTime!.hour}:${selectedTime!.minute}:00',
+        'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
+        'time': '${selectedTime!.hour}:${selectedTime!.minute}:00',
         'state': 'pending',
         'id_donor': _userId, // Replace with actual donor ID from authentication
-        //'id_point': selectedPointId,
+        'id_point': selectedPointId,
         'type': foodList.map((food) => food['category']).toSet().join(', '),
         'pending': true,
         "foods": foodList.map((food) {
@@ -433,7 +433,7 @@ class FormDonationViewState extends State<FormDonationView> {
         const SizedBox(height: 20),
         Center(
           child: ElevatedButton(
-            onPressed: _submitDonation,
+            onPressed: _chooseLocation,
             child: const Text(
               "Escoger punto de donación",
               style: TextStyle(
