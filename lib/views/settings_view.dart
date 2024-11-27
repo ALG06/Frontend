@@ -199,30 +199,14 @@ class _SettingsViewState extends State<SettingsView> {
             ),
           ),
           const SizedBox(height: 16),
-          Card(
+          const Card(
             margin: EdgeInsets.zero,
             child: Column(
               children: [
-                const ListTile(
+                ListTile(
                   leading: Icon(Icons.info_outline),
                   title: Text('Versión de la Aplicación'),
                   subtitle: Text('1.0.0'),
-                ),
-                const Divider(),
-                ListTile(
-                  leading: const Icon(Icons.policy_outlined),
-                  title: const Text('Política de Privacidad'),
-                  onTap: () {
-                    // Add navigation to privacy policy
-                  },
-                ),
-                const Divider(),
-                ListTile(
-                  leading: const Icon(Icons.description_outlined),
-                  title: const Text('Términos y Condiciones'),
-                  onTap: () {
-                    // Add navigation to terms and conditions
-                  },
                 ),
               ],
             ),
