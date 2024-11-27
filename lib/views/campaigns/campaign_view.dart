@@ -484,7 +484,7 @@ class _CampaignViewState extends State<CampaignView>
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '📍 ${campaign.hasLocation ? _formatDistance(campaign.distance) ?? "Sin distancia" : "Sin ubicación"} • 📅 ${campaign.startDate.day.toString().padLeft(2, '0')}-${campaign.startDate.month.toString().padLeft(2, '0')}-${campaign.startDate.year}',
+                  '📍 ${campaign.hasLocation ? _formatDistance(campaign.distance) : "Sin ubicación"} • 📅 ${campaign.startDate.day.toString().padLeft(2, '0')}-${campaign.startDate.month.toString().padLeft(2, '0')}-${campaign.startDate.year}',
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey[600],
