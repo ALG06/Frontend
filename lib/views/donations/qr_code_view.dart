@@ -4,8 +4,13 @@ import 'dart:typed_data';
 
 class QRCodeView extends StatelessWidget {
   final String qrCodeBase64;
+  final String titleText; // New prop for customizable text
 
-  const QRCodeView({Key? key, required this.qrCodeBase64}) : super(key: key);
+  const QRCodeView({
+    Key? key,
+    required this.qrCodeBase64,
+    required this.titleText, // Required text prop
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +25,9 @@ class QRCodeView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              '¡Tu QR está listo!',
-              style: TextStyle(
+            Text(
+              titleText, // Use the passed-in titleText
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),

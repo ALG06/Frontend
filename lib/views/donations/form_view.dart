@@ -270,7 +270,7 @@ class FormDonationViewState extends State<FormDonationView> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => QRCodeView(qrCodeBase64: qrCodeBase64),
+              builder: (context) => QRCodeView(qrCodeBase64: qrCodeBase64, titleText: "Tu QR está listo"),
             ),
           );
         } else {
