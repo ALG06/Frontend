@@ -4,7 +4,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import '../../navigation/app.dart';
 import '../../components/main_title.dart';
 import 'choose_location_view.dart';
 import 'qr_code_view.dart';
@@ -270,15 +269,14 @@ class FormDonationViewState extends State<FormDonationView> {
 
         if (qrCodeBase64 != null) {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => QRCodeView(
+              context,
+              MaterialPageRoute(
+                builder: (context) => QRCodeView(
                   qrCodeBase64: qrCodeBase64,
                   titleText: "Tu QR está listo",
-                  donationID:  "",
-            ),
-          )
-          );
+                  donationID: "",
+                ),
+              ));
         } else {
           if (kDebugMode) {
             print('QR code not found in response.');

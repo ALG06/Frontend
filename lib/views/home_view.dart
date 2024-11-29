@@ -171,7 +171,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
         setState(() {
           stats = [
             Stat(
-              value: '${donorData['total_kg_donated']}kg',
+              value: '${donorData['total_kg_donated'] / 10}kg',
               title: 'Alimentos Donados',
               color: Colors.blue,
             ),

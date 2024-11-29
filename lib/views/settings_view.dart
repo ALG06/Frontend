@@ -82,7 +82,7 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                     ],
                     onChanged: null, // Disabled dropdown
-                    disabledHint: Text('Kilómetros'),
+                    disabledHint: const Text('Kilómetros'),
                   ),
                 ),
                 Padding(

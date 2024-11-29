@@ -69,12 +69,30 @@ class _CampaignViewState extends State<CampaignView>
   String? _userId;
   bool _sortByDistance = false;
 
+  static const double defaultLatitude = 20.7333006;
+  static const double defaultLongitude = -103.4549109;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _initializeLocation();
+    _setDefaultLocation();
     _loadUserIdAndFetchData();
+  }
+
+  void _setDefaultLocation() {
+    _userPosition = Position(
+      latitude: defaultLatitude,
+      longitude: defaultLongitude,
+      timestamp: DateTime.now(),
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0,
+      altitudeAccuracy: 0,
+      headingAccuracy: 0,
+    );
   }
 
   Future<void> _loadUserIdAndFetchData() async {
@@ -150,33 +168,6 @@ class _CampaignViewState extends State<CampaignView>
       debugPrint('Error in _fetchRegisteredCampaigns: $e');
       setState(() {
         _errorMessage = 'Error fetching registered campaigns: ${e.toString()}';
-      });
-    }
-  }
-
-  Future<void> _initializeLocation() async {
-    try {
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        throw 'Los servicios de ubicación están desactivados';
-      }
-
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw 'Los permisos de ubicación fueron denegados';
-        }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        throw 'Los permisos de ubicación fueron denegados permanentemente';
-      }
-
-      _userPosition = await Geolocator.getCurrentPosition();
-    } catch (e) {
-      setState(() {
-        _errorMessage = e.toString();
       });
     }
   }
@@ -573,14 +564,6 @@ class _CampaignViewState extends State<CampaignView>
               ),
             ),
           ),
-          if (_errorMessage != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.red),
-              ),
-            ),
           Expanded(
             child: TabBarView(
               controller: _tabController,

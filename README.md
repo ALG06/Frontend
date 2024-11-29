@@ -34,3 +34,8 @@ Una vez el emulador (iOS / Android) abierto, es solo cuestión de utilizar el si
 ```bash
 flutter run
 ```
+
+### Testeo Automatizado
+Para correr estas pruebas, utiliza el siguiente comando 
+
+```flutter test```

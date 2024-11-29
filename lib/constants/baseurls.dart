@@ -58,7 +58,7 @@ class EnvironmentConfig {
     if (endpoint.startsWith('/')) {
       url = url + endpoint;
     } else {
-      url = url + '/' + endpoint;
+      url = '$url/$endpoint';
     }
     return url;
   }
